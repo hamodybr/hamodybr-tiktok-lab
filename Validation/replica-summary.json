@@ -58,5 +58,5 @@
   ],
   "mediaSHA256": "2c15e96a795a31b3145caf7b9d53f5d6a01bd93a7908cd5622b7af1cca8e10dd",
   "testedFile": "MP4 extracted from prior HAMODYBR-HAZE52-REPLICA archive",
-  "validationScope": "Python companion executed; Swift implementation and iOS UI not compiled in this environment."
+  "validationScope": "Replica specimen inspected with Python. Separately, all 14 Swift core tests (including the real-media fixture) and the iOS arm64 Release build passed on GitHub Actions. No physical iPhone runtime test yet."
 }
