@@ -1,0 +1,62 @@
+{
+  "fileSize": 93902862,
+  "topLevelOrder": "ftyp → moov → mdat → free",
+  "movieTimescale": 1000,
+  "movieDuration": 18446744073709551615,
+  "movieDurationUnknown": true,
+  "seconds": null,
+  "fastStart": true,
+  "trailingUnparsedBytes": 91872,
+  "tracks": [
+    {
+      "index": 1,
+      "kind": "vide",
+      "codec": "avc1",
+      "timescale": 30,
+      "mediaDuration": 887,
+      "headerDuration": 1703040,
+      "sampleCount": 887,
+      "timingSampleCount": 887,
+      "timingDuration": 887,
+      "compositionSampleCount": null,
+      "seconds": 29.566666666666666,
+      "averageFPS": 30.0
+    },
+    {
+      "index": 2,
+      "kind": "soun",
+      "codec": "mp4a",
+      "timescale": 44100,
+      "mediaDuration": 1306624,
+      "headerDuration": 1703852,
+      "sampleCount": 1276,
+      "timingSampleCount": 1276,
+      "timingDuration": 1306624,
+      "compositionSampleCount": null,
+      "seconds": 29.628662131519274,
+      "averageFPS": null
+    },
+    {
+      "index": 3,
+      "kind": "soun",
+      "codec": "mp4a",
+      "timescale": 44100,
+      "mediaDuration": 1306624,
+      "headerDuration": 1703852,
+      "sampleCount": 12760,
+      "timingSampleCount": 12760,
+      "timingDuration": 1318108,
+      "compositionSampleCount": null,
+      "seconds": 29.628662131519274,
+      "averageFPS": null
+    }
+  ],
+  "warnings": [
+    "partial scan: 91872 unparsed trailing bytes; hash covers declared mdat only",
+    "mvhd duration is zero or unknown; some players may show 0:00",
+    "track 3: stts duration differs from mdhd"
+  ],
+  "mediaSHA256": "2c15e96a795a31b3145caf7b9d53f5d6a01bd93a7908cd5622b7af1cca8e10dd",
+  "testedFile": "MP4 extracted from prior HAMODYBR-HAZE52-REPLICA archive",
+  "validationScope": "Python companion executed; Swift implementation and iOS UI not compiled in this environment."
+}

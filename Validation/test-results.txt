@@ -1,0 +1,9 @@
+Validation performed 2026-10-05 UTC
+
+Python companion: 15 tests PASS (including real H.264 60 FPS / AAC 48 kHz media).
+Replica archive: media extracted and inspected; summary in replica-summary.json.
+Source reference checks, workflow YAML, Xcode scheme XML, and bash syntax: PASS.
+
+NOT RUN: Swift XCTest, Xcode build, iOS simulator, or iPhone install.
+No IPA was built or signed in this environment.
+GitHub Actions/macOS build script runs Swift tests with the included real-media fixture before building the app.

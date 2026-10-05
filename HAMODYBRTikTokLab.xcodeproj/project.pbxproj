@@ -1,0 +1,37 @@
+// !$*UTF8*$!
+{
+ archiveVersion = 1;
+ classes = {};
+ objectVersion = 56;
+ objects = {
+  AABBCCDDEEFF001122334455 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "App/Assets.xcassets"; sourceTree = "<group>"; };
+  AABBCCDDEEFF001122334456 = {isa = PBXBuildFile; fileRef = AABBCCDDEEFF001122334455; };
+  FBD82B67A76725BA312E3C62 = {isa = PBXBuildFile; fileRef = C125CD6FD6C744B3771F66D7; };
+  C125CD6FD6C744B3771F66D7 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/ContentView.swift"; sourceTree = "<group>"; };
+  C14B822EB46C556CEAF50CBC = {isa = PBXBuildFile; fileRef = 44B0F77D80E668BB7C2C1A88; };
+  44B0F77D80E668BB7C2C1A88 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/HAMODYBRTikTokLabApp.swift"; sourceTree = "<group>"; };
+  B6DAF5F370F4101524A691A5 = {isa = PBXBuildFile; fileRef = 167BAA8CCD3A8A1CBD5464D7; };
+  167BAA8CCD3A8A1CBD5464D7 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/LabModel.swift"; sourceTree = "<group>"; };
+  D503F1CF0F6BE17AA4BEB3DC = {isa = PBXBuildFile; fileRef = 65C2D3C785E58C27C7E75574; };
+  65C2D3C785E58C27C7E75574 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/VideoAnalysis.swift"; sourceTree = "<group>"; };
+  54EF6388BEE087526B229F54 = {isa = PBXBuildFile; fileRef = E72A5DB6B058EB3403C3A005; };
+  E72A5DB6B058EB3403C3A005 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/MP4Inspector.swift"; sourceTree = "<group>"; };
+  6C69314CC23DB9946C0253EF = {isa = PBXBuildFile; fileRef = A1339C48AC640C618663ABF3; };
+  A1339C48AC640C618663ABF3 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/MediaFingerprint.swift"; sourceTree = "<group>"; };
+  38A007151ABE87CC01A5B6E9 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HAMODYBRTikTokLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+  B28B7AF69320201D1CF206EB = {isa = PBXGroup; children = (AABBCCDDEEFF001122334455, C125CD6FD6C744B3771F66D7, 44B0F77D80E668BB7C2C1A88, 167BAA8CCD3A8A1CBD5464D7, 65C2D3C785E58C27C7E75574, E72A5DB6B058EB3403C3A005, A1339C48AC640C618663ABF3, FBDC4F23F93125BBEEAE800C); sourceTree = "<group>"; };
+  FBDC4F23F93125BBEEAE800C = {isa = PBXGroup; children = (38A007151ABE87CC01A5B6E9); name = Products; sourceTree = "<group>"; };
+  BCE16DD0260827ECF338C787 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (FBD82B67A76725BA312E3C62, C14B822EB46C556CEAF50CBC, B6DAF5F370F4101524A691A5, D503F1CF0F6BE17AA4BEB3DC, 54EF6388BEE087526B229F54, 6C69314CC23DB9946C0253EF); runOnlyForDeploymentPostprocessing = 0; };
+  7561BFB015D8F536760CB671 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+  0189424A5A60FED329FA868E = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AABBCCDDEEFF001122334456); runOnlyForDeploymentPostprocessing = 0; };
+  0E8A3AD980EC179856012B7E = {isa = PBXNativeTarget; buildConfigurationList = F497FD0CF9CA1625C4A860DE; buildPhases = (BCE16DD0260827ECF338C787, 7561BFB015D8F536760CB671, 0189424A5A60FED329FA868E); buildRules = (); dependencies = (); name = HAMODYBRTikTokLab; productName = HAMODYBRTikTokLab; productReference = 38A007151ABE87CC01A5B6E9; productType = "com.apple.product-type.application"; };
+  98F54143AB4E86B28C3AFEE0 = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = YES; LastSwiftUpdateCheck = 1600; LastUpgradeCheck = 1600; }; buildConfigurationList = 49EA05A46B1A86EA7E413B43; compatibilityVersion = "Xcode 14.0"; developmentRegion = ar; hasScannedForEncodings = 0; knownRegions = (ar, en, Base); mainGroup = B28B7AF69320201D1CF206EB; productRefGroup = FBDC4F23F93125BBEEAE800C; projectDirPath = ""; projectRoot = ""; targets = (0E8A3AD980EC179856012B7E); };
+  89E1FD6268CC0F221A2BE178 = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;}; name = Debug; };
+  E6DE6C99132752C914FEF632 = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";}; name = Release; };
+  49EA05A46B1A86EA7E413B43 = {isa = XCConfigurationList; buildConfigurations = (89E1FD6268CC0F221A2BE178, E6DE6C99132752C914FEF632); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+  7082CC0B6FC1282FCEABD07A = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; PRODUCT_BUNDLE_IDENTIFIER = com.hamodybr.tiktoklab; PRODUCT_NAME = "$(TARGET_NAME)"; TARGETED_DEVICE_FAMILY = "1,2"; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "HAMODYBR Lab"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"; MARKETING_VERSION = 0.1.0; CURRENT_PROJECT_VERSION = 1; SWIFT_STRICT_CONCURRENCY = minimal; CODE_SIGN_STYLE = Automatic; ENABLE_USER_SCRIPT_SANDBOXING = YES; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;}; name = Debug; };
+  639A7CA24D39909E713B47F7 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; PRODUCT_BUNDLE_IDENTIFIER = com.hamodybr.tiktoklab; PRODUCT_NAME = "$(TARGET_NAME)"; TARGETED_DEVICE_FAMILY = "1,2"; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "HAMODYBR Lab"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait; INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"; MARKETING_VERSION = 0.1.0; CURRENT_PROJECT_VERSION = 1; SWIFT_STRICT_CONCURRENCY = minimal; CODE_SIGN_STYLE = Automatic; ENABLE_USER_SCRIPT_SANDBOXING = YES; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";}; name = Release; };
+  F497FD0CF9CA1625C4A860DE = {isa = XCConfigurationList; buildConfigurations = (7082CC0B6FC1282FCEABD07A, 639A7CA24D39909E713B47F7); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+ };
+ rootObject = 98F54143AB4E86B28C3AFEE0;
+}
