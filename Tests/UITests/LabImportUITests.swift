@@ -11,6 +11,12 @@ final class LabImportUITests: XCTestCase {
     private func choose(_ name: String, app: XCUIApplication) {
         app.buttons["import-files"].tap()
         let file = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", name)).firstMatch
+        if !file.waitForExistence(timeout: 4) {
+            // Files may ignore directoryURL and open the provider root instead.
+            let folder = app.cells.matching(NSPredicate(format: "label CONTAINS %@", "HAMODYBR Lab")).firstMatch
+            XCTAssertTrue(folder.waitForExistence(timeout: 10), "The app Documents folder is not exposed to Files.\n" + app.debugDescription)
+            folder.tap()
+        }
         XCTAssertTrue(file.waitForExistence(timeout: 15), "File picker did not show seeded file.\n" + app.debugDescription)
         file.tap()
     }
@@ -24,9 +30,12 @@ final class LabImportUITests: XCTestCase {
     func testFilesPickerCancelLeavesImporterUsable() {
         let app = launch()
         app.buttons["import-files"].tap()
-        let cancel = app.buttons["Cancel"].firstMatch
+        let cancel = app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@", "Cancel", "إلغاء")).firstMatch
         XCTAssertTrue(cancel.waitForExistence(timeout: 15), app.debugDescription)
         cancel.tap()
+        let status = app.staticTexts["lab-status"]
+        XCTAssertTrue(status.waitForExistence(timeout: 5))
+        XCTAssertEqual(status.label, "أُلغي اختيار الملف")
         XCTAssertTrue(app.buttons["import-files"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["import-files"].isEnabled)
     }
