@@ -23,11 +23,14 @@ jobs:
           path: build/HAMODYBR-TikTok-Lab-unsigned.ipa
           if-no-files-found: error
           retention-days: 14
+      - name: Export failed simulator screenshots
+        if: failure()
+        run: xcrun xcresulttool export attachments --path build/ImportSmoke.xcresult --output-path build/ImportDebug --only-failures
       - name: Upload failed simulator test results
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: Import-UI-Test-Diagnostics
-          path: build/ImportSmoke.xcresult
+          path: build/ImportDebug
           if-no-files-found: ignore
           retention-days: 3

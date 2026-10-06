@@ -43,7 +43,7 @@ struct ContentView: View {
             .navigationTitle("TikTok Lab")
             .navigationBarTitleDisplayMode(.inline)
             .tint(cyan)
-            .fullScreenCover(isPresented: $importingFile) {
+            .sheet(isPresented: $importingFile) {
                 NativeVideoPicker(onPick: { url in
                     importingFile = false
                     model.beginFileImport(url, slot: fileSlot)
@@ -53,7 +53,7 @@ struct ContentView: View {
                 }, onError: { message in
                     importingFile = false
                     model.error = message
-                }).ignoresSafeArea()
+                })
             }
             .onChange(of: photo) { item in
                 if let item {
@@ -257,7 +257,9 @@ private struct NativeVideoPicker: UIViewControllerRepresentable {
     let onError: (String) -> Void
     func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.movie, .video, .data], asCopy: true)
+        // Some providers report a dynamic UTI even for .mp4 files. Let the
+        // MP4 reader validate the selected bytes rather than disabling them.
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.item], asCopy: true)
         picker.allowsMultipleSelection = false
         picker.shouldShowFileExtensions = true
         picker.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first

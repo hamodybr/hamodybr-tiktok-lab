@@ -10,7 +10,7 @@ final class LabImportUITests: XCTestCase {
     }
     private func choose(_ name: String, app: XCUIApplication) {
         app.buttons["import-files"].tap()
-        let file = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", name)).firstMatch
+        let file = app.cells.matching(NSPredicate(format: "label CONTAINS %@", name)).firstMatch
         if !file.waitForExistence(timeout: 4) {
             // Files may ignore directoryURL and open the provider root instead.
             let folder = app.cells.matching(NSPredicate(format: "label CONTAINS %@", "HAMODYBR Lab")).firstMatch
@@ -18,7 +18,10 @@ final class LabImportUITests: XCTestCase {
             folder.tap()
         }
         XCTAssertTrue(file.waitForExistence(timeout: 15), "File picker did not show seeded file.\n" + app.debugDescription)
-        file.tap()
+        XCTAssertTrue(file.isEnabled, "The picker disabled a valid file type.\n" + file.debugDescription)
+        print("Picking file: \(file.debugDescription)")
+        // Tap the video thumbnail to avoid an ambiguous grid-cell hit point.
+        file.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25)).tap()
     }
     func testFilesPickerSelectionProducesAnalysis() {
         let app = launch()

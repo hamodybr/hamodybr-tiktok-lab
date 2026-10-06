@@ -14,6 +14,7 @@ PY
 xcodebuild -project HAMODYBRTikTokLab.xcodeproj \
     -scheme HAMODYBRTikTokLab -configuration Debug \
     -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+    -parallel-testing-enabled NO \
     -derivedDataPath build/Simulator \
     -resultBundlePath build/ImportSmoke.xcresult \
     CODE_SIGNING_ALLOWED=NO test
