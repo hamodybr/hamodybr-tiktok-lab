@@ -111,6 +111,7 @@ public final class MP4Inspector {
         guard depth <= 16 else { throw LabError.invalid("بنية MP4 أعمق من الحد المسموح") }
         var cursor = start
         while cursor < end {
+            try Task.checkCancellation()
             if end - cursor < 8 {
                 if depth == 0 && atoms.contains(where: { $0.path == "moov" }) && atoms.contains(where: { $0.path == "mdat" }) {
                     trailingUnparsedBytes = end - cursor
@@ -167,6 +168,7 @@ public final class MP4Inspector {
         var ticks: UInt64 = 0
         var processed: UInt64 = 0
         while processed < count {
+            try Task.checkCancellation()
             let batch = min(UInt64(4096), count - processed)
             let bytes = try read(atom.payload + 8 + processed * 8, Int(batch * 8))
             for i in stride(from: 0, to: bytes.count, by: 8) {

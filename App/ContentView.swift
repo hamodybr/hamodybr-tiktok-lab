@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import UniformTypeIdentifiers
+import UIKit
 
 struct ContentView: View {
     @StateObject private var model = LabModel()
@@ -16,10 +17,14 @@ struct ContentView: View {
                     header
                     importPanel
                     if model.busy {
-                        HStack(spacing: 12) { ProgressView().tint(cyan); Text(model.status).font(.subheadline) }
-                            .frame(maxWidth: .infinity, alignment: .leading).padding().card()
+                        VStack(alignment: .leading, spacing: 10) {
+                            if let name = model.selectedFileName { Text(name).font(.caption).lineLimit(2) }
+                            HStack { Text(model.status).font(.subheadline); Spacer(); Text("\(Int(model.progress * 100))%").font(.caption.monospacedDigit()) }
+                            ProgressView(value: model.progress).tint(cyan).accessibilityIdentifier("import-progress")
+                            Button("إلغاء الفحص", role: .cancel) { model.cancel() }.accessibilityIdentifier("cancel-import")
+                        }.frame(maxWidth: .infinity, alignment: .leading).padding().card()
                     } else {
-                        Text(model.status).font(.footnote).foregroundStyle(.secondary)
+                        Text(model.status).font(.footnote).foregroundStyle(.secondary).accessibilityIdentifier("lab-status")
                     }
                     if let report = model.current {
                         summary(report)
@@ -28,8 +33,8 @@ struct ContentView: View {
                         atoms(report)
                     } else if !model.busy { emptyState }
                     if let original = model.original, let tiktok = model.tiktok { comparison(original, tiktok) }
-                    if model.original != nil || model.tiktok != nil { exportPanel }
-                    Text("V0.1 • الفحص محلي على الآيفون. معلومات الملف تساعدنا على التشخيص؛ لا تضمن جودة تيكتوك أو تفسر وحدها تقطيع الشبكة.")
+                    if model.original != nil || model.tiktok != nil || model.hasFailure { exportPanel }
+                    Text("V0.2 • الفحص محلي على الآيفون. معلومات الملف تساعدنا على التشخيص؛ لا تضمن جودة تيكتوك أو تفسر وحدها تقطيع الشبكة.")
                         .font(.caption).foregroundStyle(.secondary).padding(.bottom)
                 }
                 .padding(20)
@@ -38,18 +43,23 @@ struct ContentView: View {
             .navigationTitle("TikTok Lab")
             .navigationBarTitleDisplayMode(.inline)
             .tint(cyan)
-            .fileImporter(isPresented: $importingFile, allowedContentTypes: [.movie, .mpeg4Movie, .quickTimeMovie, .data], allowsMultipleSelection: false) { result in
-                let slot = fileSlot
-                switch result {
-                case .success(let urls):
-                    if let url = urls.first { Task { await model.importFile(url, slot: slot) } }
-                case .failure(let error): model.error = error.localizedDescription
-                }
+            .fullScreenCover(isPresented: $importingFile) {
+                NativeVideoPicker(onPick: { url in
+                    importingFile = false
+                    model.beginFileImport(url, slot: fileSlot)
+                }, onCancel: {
+                    importingFile = false
+                    model.pickerCancelled()
+                }, onError: { message in
+                    importingFile = false
+                    model.error = message
+                }).ignoresSafeArea()
             }
             .onChange(of: photo) { item in
                 if let item {
                     let slot = model.selected
-                    Task { await model.importPhoto(item, slot: slot); photo = nil }
+                    model.beginPhotoImport(item, slot: slot)
+                    photo = nil
                 }
             }
             .alert("تعذر إكمال العملية", isPresented: Binding(get: { model.error != nil }, set: { if !$0 { model.error = nil } })) {
@@ -73,13 +83,22 @@ struct ContentView: View {
             HStack(spacing: 12) {
                 Button {
                     fileSlot = model.selected
+                    model.pickerOpened()
                     importingFile = true
                 } label: { Label("من الملفات", systemImage: "folder").frame(maxWidth: .infinity) }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent).accessibilityIdentifier("import-files")
                 PhotosPicker(selection: $photo, matching: .videos, preferredItemEncoding: .current) {
                     Label("من الصور", systemImage: "photo").frame(maxWidth: .infinity)
                 }.buttonStyle(.bordered)
             }.disabled(model.busy)
+            HStack {
+                Button { model.sample() } label: { Label("جرّب فيديو تجريبي", systemImage: "play.circle") }
+                    .font(.caption).disabled(model.busy).accessibilityIdentifier("import-sample")
+                Spacer()
+                if model.current != nil {
+                    Button("مسح", role: .destructive) { model.clearCurrent() }.font(.caption).disabled(model.busy)
+                }
+            }
             Text("لملفات Replica وبنية MP4 الدقيقة، استخدم «الملفات»؛ تصدير مكتبة الصور قد يعطي ملفًا مختلفًا. نسخة تيكتوك تضيفها بعد تنزيلها بنفسك.")
                 .font(.caption).foregroundStyle(.secondary)
         }.padding().card()
@@ -95,7 +114,7 @@ struct ContentView: View {
     private func summary(_ r: VideoAnalysis) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Label(r.label, systemImage: "film").font(.headline)
-            Text(r.mp4.fileName).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+            Text(r.mp4.fileName).font(.caption).foregroundStyle(.secondary).lineLimit(2).accessibilityIdentifier("report-file-name")
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 metric("الدقة", r.resolution)
                 metric("FPS", r.fpsText)
@@ -192,6 +211,10 @@ struct ContentView: View {
                 ShareLink(item: url) { Label("شارك تقرير JSON", systemImage: "square.and.arrow.up") }
                     .buttonStyle(.bordered)
             }
+            if let video = model.currentVideoURL {
+                ShareLink(item: video) { Label("شارك نسخة الفيديو المستوردة", systemImage: "film") }
+                    .buttonStyle(.bordered).disabled(model.busy)
+            }
         }
     }
     private func metric(_ label: String, _ value: String) -> some View {
@@ -226,6 +249,40 @@ struct ContentView: View {
         return String(format: "%.2f Mb/s", value / 1_000_000)
     }
     private func count(_ value: UInt64?) -> String { value.map(String.init) ?? "—" }
+}
+
+private struct NativeVideoPicker: UIViewControllerRepresentable {
+    let onPick: (URL) -> Void
+    let onCancel: () -> Void
+    let onError: (String) -> Void
+    func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [.movie, .video, .data], asCopy: true)
+        picker.allowsMultipleSelection = false
+        picker.shouldShowFileExtensions = true
+        picker.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        picker.delegate = context.coordinator
+        return picker
+    }
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {
+        context.coordinator.parent = self
+    }
+    final class Coordinator: NSObject, UIDocumentPickerDelegate {
+        var parent: NativeVideoPicker
+        private var completed = false
+        init(parent: NativeVideoPicker) { self.parent = parent }
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            guard !completed else { return }
+            completed = true
+            guard let url = urls.first else { parent.onError("لم يرجع منتقي الملفات فيديو. أعد الاختيار."); return }
+            parent.onPick(url)
+        }
+        func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+            guard !completed else { return }
+            completed = true
+            parent.onCancel()
+        }
+    }
 }
 
 private extension View {

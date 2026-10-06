@@ -8,16 +8,26 @@ permissions:
 jobs:
   build:
     runs-on: macos-15
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: Toolchain
         run: xcodebuild -version && swift --version
       - name: Test core and build unsigned IPA
         run: bash Scripts/build-ipa.sh
+      - name: Test Files import on iPhone simulator
+        run: bash Scripts/test-import-ui.sh
       - uses: actions/upload-artifact@v4
         with:
           name: HAMODYBR-TikTok-Lab-unsigned-IPA
           path: build/HAMODYBR-TikTok-Lab-unsigned.ipa
           if-no-files-found: error
           retention-days: 14
+      - name: Upload failed simulator test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Import-UI-Test-Diagnostics
+          path: build/ImportSmoke.xcresult
+          if-no-files-found: ignore
+          retention-days: 3
