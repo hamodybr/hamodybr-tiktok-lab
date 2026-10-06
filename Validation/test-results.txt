@@ -1,14 +1,21 @@
-Validation performed 2026-10-05 UTC
+Version 0.2 validation performed 2026-10-06 UTC
 
-Python companion: 15 tests PASS (including real H.264 60 FPS / AAC 48 kHz media).
-Replica archive: media extracted and inspected with Python; summary in replica-summary.json.
-Swift XCTest on macOS: 14 tests PASS, zero failures, zero skips (real-media fixture included).
-iOS arm64 Release build: PASS, Xcode 16.4 / Swift 6.1.2, iOS minimum 16.0.
-IPA artifact: downloaded, SHA-256 matched GitHub artifact digest, ZIP CRC validated.
-Inner IPA: Info.plist and arm64 Mach-O executable verified.
-Unsigned IPA SHA-256: 2aee919877d189816367506a053246d5ecc74b95b8f8903ee635bb20da76667d
-Build commit: 7d5560bce90f0b209bf69744d46352897675629a
-Build log: https://github.com/hamodybr/hamodybr-tiktok-lab/actions/runs/37391199557
+Swift XCTest on macOS: 22 tests PASS, zero failures, zero skips.
+Includes real H.264 60 FPS / AAC 48 kHz media, import ownership, copy cancellation and deadline behavior.
+iPhone simulator XCTest UI: 4 tests PASS, zero failures.
+- Normal tap on a video in Files produces an analysis.
+- A thumbnail tap completes analysis; the saved report survives termination and relaunch.
+- Picker cancellation restores the import controls and cancellation status.
+- An empty selected file produces the application error containing its empty-video diagnosis.
+iOS arm64 Release build: PASS, Xcode 16.4, iOS minimum 16.0.
+Files integration keys verified as actual boolean values in the device app Info.plist.
+IPA artifact: downloaded, SHA-256 matched GitHub artifact digest, outer/inner ZIP CRC validated.
+Inner IPA: com.hamodybr.tiktoklab, version 0.2.0, build 2; arm64 Mach-O and bundled sample verified.
+Unsigned IPA SHA-256: 8ed28a1a7285b59d0df4ecfd88509558b6ffaff31bd3ade652c71f19cf57c939
+Build commit: fbf445ffa85c350b1134d8dfbd2ac380c33ea253
+Build log: https://github.com/hamodybr/hamodybr-tiktok-lab/actions/runs/37450623011
 
-NOT RUN: iOS simulator runtime or physical iPhone installation.
+Python companion: unchanged; 15 tests passed on 2026-10-05 UTC.
+Replica archive: inspected with Python previously; summary in replica-summary.json.
+NOT RUN for version 0.2: physical iPhone installation/runtime, iCloud or third-party file providers.
 IPA must be signed before installation.

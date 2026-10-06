@@ -1,8 +1,18 @@
-# HAMODYBR TikTok Lab — النسخة 0.1
+# HAMODYBR TikTok Lab — النسخة 0.2
 
 تطبيق آيفون للفحص والمقارنة، مبني باستخدام SwiftUI. الواجهة عربية، والفحص محلي بدون حساب أو رفع فيديوهات.
 
-**حالة التسليم:** بُني IPA غير موقّع بنجاح على GitHub Actions باستخدام Xcode 16.4، ونجحت اختبارات Swift الـ14 بدون إخفاقات. جرى اختبار أداة Python أيضًا على Linux وعلى ملف Replica سابق. لم يُجرَّب التطبيق على جهاز آيفون فعلي بعد؛ وقّع IPA داخل Feather ثم جرّبه. سجل البناء: https://github.com/hamodybr/hamodybr-tiktok-lab/actions/runs/37391199557
+**حالة النسخة 0.2:** نجح بناء IPA للآيفون باستخدام Xcode 16.4. نجحت اختبارات Swift الـ22 واختبارات واجهة محاكي آيفون الـ4: الضغط العادي على فيديو من Files، الاختيار من الصورة المصغّرة واستعادة الجلسة، إلغاء الاختيار، وإظهار رسالة الملف الفارغ. لم تُجرَّب النسخة 0.2 على آيفون فعلي أو مزوّد iCloud هنا؛ وقّع IPA داخل Feather وثبّته فوق النسخة الحالية بنفس معرّف الحزمة. سجل البناء: https://github.com/hamodybr/hamodybr-tiktok-lab/actions/runs/37450623011
+
+## إضافات 0.2
+
+- منتقي iOS مباشر يستورد نسخة محلية ويقبل أنواع الملفات التي يبلغ عنها مزوّد Files، ثم يتحقق من بنية MP4؛ مع معالجة الإلغاء والاختيار الفارغ.
+- اسم الملف يظهر فور رجوع الاختيار، مع تقدّم النسخ والفحص وزر إلغاء.
+- نتيجة MP4 تظهر أثناء قراءة معلومات Apple؛ لهذه القراءة مهلة 7 ثوانٍ.
+- آخر مقارنة ونسخها المحلية تُحفظ بعد إغلاق التطبيق، مع خيار مسح كل خانة.
+- مشاركة الفيديو المستورد، وتقرير JSON يتضمن تشخيص آخر فشل في الاستيراد.
+- فيديو تجريبي مرفق لفحص المسار، يظهر أيضًا في مجلد التطبيق داخل Files.
+- اختبارات جديدة لنسخ الملفات والإلغاء والمهلة، واختبارات على محاكي آيفون لاختيار ملف وإلغائه وفشل الملف الفارغ واستعادة الجلسة.
 
 ## الوظائف الموجودة
 
@@ -16,17 +26,11 @@
 - تصدير تقرير JSON ومشاركته.
 - قراءة على دفعات، بدون فك إطارات الفيديو أو تحميله كاملًا في الذاكرة.
 
-## الحصول على IPA عبر GitHub، حتى إذا جهازك Windows
+## التثبيت والتحديث
 
-1. فك الحزمة وافتح مجلد HAMODYBR-TikTok-Lab.
-2. أنشئ مستودعًا جديدًا على GitHub باسم hamodybr-tiktok-lab.
-3. ارفع **محتويات المجلد إلى جذر المستودع**. يجب أن يكون Package.swift وApp وCore وScripts و.github في الجذر، بدون طبقة مجلد إضافية.
-4. تأكد أن الملف المخفي `.github/workflows/build-ipa.yml` مرفوع أيضًا. عند استخدام الويب، افتح هذا المسار عبر Add file → Create new file والصق محتواه إذا لم يظهر ضمن الملفات المرفوعة.
-5. افتح Actions → Build iPhone IPA → Run workflow. التشغيل يتطلب تفعيل Actions وتوفر إتاحة/رصيد macOS runners في حسابك؛ لا تفترض أنه مجاني لكل حساب.
-6. بعد النجاح، نزّل artifact باسم HAMODYBR-TikTok-Lab-unsigned-IPA وفك ضغطه. داخله HAMODYBR-TikTok-Lab-unsigned.ipa.
-7. استورد IPA في Feather، ووقّعه بشهادتك ثم ثبّته. لا ترفع p12 أو mobileprovision أو كلمة المرور إلى المستودع. لا يحتاج مجرى البناء شهادتك.
+حمّل ملف IPA المرفق للتحديث، ثم استورده في Feather ووقّعه بشهادتك وثبّته فوق التطبيق الحالي بنفس معرّف الحزمة. ملف IPA غير موقّع.
 
-إذا فشل التشغيل، احتفظ برسالة الخطأ. IPA لا يُنتج إلا بعد نجاح اختبارات Swift وبناء Xcode. تم تشغيل هذا المسار بنجاح على GitHub Actions في 2026-10-05 UTC.
+الشيفرة ومجرى البناء محفوظان في https://github.com/hamodybr/hamodybr-tiktok-lab. لإعادة البناء افتح Actions → Build iPhone IPA → Run workflow. بعد نجاح اختبارات Swift وبناء الجهاز واختبارات محاكي الآيفون يظهر artifact باسم HAMODYBR-TikTok-Lab-unsigned-IPA، وداخله HAMODYBR-TikTok-Lab-unsigned.ipa.
 
 ## البناء على Mac
 
@@ -101,11 +105,12 @@ swift test
 python3 Scripts/test_inspector.py
 ```
 
-نجحت 15 حالة Python، تشمل فيديو H.264 حقيقيًا 60 FPS بصوت AAC 48 kHz، وعينات وهمية، ومدة مجهولة، وملفات غير مكتملة، والبصمة، وحماية المدخل من الكتابة فوقه. بعد ذلك نجحت اختبارات Swift الـ14 على macOS، بما فيها ملف H.264 الحقيقي المرفق، ونجح بناء Release لجهاز iOS arm64. اختبار التشغيل والتثبيت على آيفون فعلي ما زال مطلوبًا.
+نجحت سابقًا 15 حالة Python، تشمل فيديو H.264 حقيقيًا 60 FPS بصوت AAC 48 kHz، وعينات وهمية، ومدة مجهولة، وملفات غير مكتملة، والبصمة، وحماية المدخل من الكتابة فوقه. في النسخة 0.2 نجحت اختبارات Swift الـ22، بما فيها النسخ والإلغاء والمهلة وملف H.264 الحقيقي المرفق، ثم نجحت حالات الواجهة الأربع على محاكي آيفون. نجح بناء Release لجهاز iOS arm64، وتحققت سلامة أرشيف IPA ورقم النسخة ومفاتيح دمج Files. تجربة التحديث على آيفون فعلي ومزوّد iCloud ما زالت مطلوبة.
 
 ## مراجع
 
 - Apple: https://developer.apple.com/documentation/avfoundation/loading-media-data-asynchronously
-- Apple fileImporter: https://developer.apple.com/documentation/swiftui/view/fileimporter(isPresented:allowedContentTypes:onCompletion:)
+- Apple document picker: https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller/init(foropeningcontenttypes:ascopy:)
+- Apple Files integration: https://developer.apple.com/documentation/fileprovider
 - GitHub macOS runners: https://docs.github.com/en/actions/reference/runners/github-hosted-runners
 - Feather: https://feather.khcrysalis.dev/
